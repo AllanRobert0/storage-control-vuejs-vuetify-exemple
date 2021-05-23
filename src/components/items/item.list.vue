@@ -35,7 +35,7 @@
           <div>{{ item.name }}</div>
           <h3> R$ {{ item.price }}</h3>
           <v-icon>mdi-barcode</v-icon>
-          {{ item.price }}
+          {{ item.barcode }}
         </v-card-text>
 
         <v-card-actions>
