@@ -15,10 +15,9 @@
 
                 <v-btn
                   block
-                  :disabled="loading3"
                   color="blue-grey"
                   class="ma-2 white--text"
-                  @click="onSave()"
+                  @click="ativarScanner()"
                 >
                   Scanear Codigo
                   <v-icon
@@ -39,7 +38,6 @@
                     label="Código de Barras *"
                     v-model="newItem.barcode"
                     required
-                    type="number"
                   ></v-text-field>
                 </v-col>
 
@@ -92,12 +90,25 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <Scanner
+        :showScanner="openScanner"
+        v-on:onSuccessScan="fillBarcodeField"
+        v-on:onFailedScan="closeScanDialog"
+      />
+<!-- 
+         -->
   </v-container>
 </template>
 
 <script>
+  import Scanner from '../../misc/scanner';
+
   export default {
     name: 'ItemAdd',
+    components: {
+      Scanner,
+    },
     props: {
         showDialog: Boolean
     },
@@ -106,7 +117,8 @@
         name: "",
         price: "",
         barcode: "",
-      }
+      },
+      openScanner: false,
     }),
     methods: {
       onSave(){
@@ -132,8 +144,18 @@
           ) return false;
 
         return true;
+      },
+      ativarScanner(){
+        this.openScanner = true;
+        console.log("Ativando o scanner -> ", this.openScanner);
+      },
+      fillBarcodeField(decodedCode){
+        this.newItem.barcode = decodedCode;
+        this.openScanner = false;
+      },
+      closeScanDialog(){
+        this.openScanner = false;
       }
-
     }
   }
 </script>
